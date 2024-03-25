@@ -1,0 +1,64 @@
+const asyncHandler = require("express-async-handler");
+const User = require("../model/user")
+
+const jwt=require("jsonwebtoken");
+const bcrypt=require("bcrypt");
+
+
+
+const loginUser = asyncHandler(async (req, res) => {
+    const { email, password } = req.body
+    console.log("login user");
+
+    if (!email || !password) {
+        res.status(401).json({message: "fill requried fields"})
+    }else{
+        const user =await User.findOne({email});
+
+        if(user && await bcrypt.compare(password, user.password)){
+        
+        const token=jwt.sign({
+            user:{
+                username: user.username,
+                email: user.email,
+                userid:user.id,
+            }
+        },process.env.SECRET_KEY,{expiresIn:"15m"});
+
+        res.status(200).json({ accesssToken:token});
+
+        }else{
+            res.status(404).json({ message: "user not found..." })
+        }
+    }
+})
+
+const registerUser = asyncHandler(async (req, res) => {
+    console.log("resgister user")
+    const { username, email, password } = req.body;
+
+    if (!username || !email || !password) {
+        console.log("please enter requuired fileds")
+        res.status(400);
+        res.json({ message: "fill required fileds" })
+    }
+
+    const isUserAvalaible = await User.findOne({ email });
+
+    if (isUserAvalaible) {
+        res.status(400);
+        res.json({ message: "user already exists" });
+
+    } else {
+        const hashedPassword= await bcrypt.hash(password,10);
+        await User.create({ username, email, password:hashedPassword});
+        res.status(200);
+        res.json({ message: "user created successfully" });
+    }
+})
+
+function currentUser(req, res) {
+    res.status(200).json(req.user);
+}
+
+module.exports = { currentUser, registerUser, loginUser }

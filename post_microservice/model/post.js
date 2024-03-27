@@ -1,6 +1,10 @@
 const mongoose= require('mongoose');
 
 const postSchema=mongoose.Schema({
+    userid:{
+        type:mongoose.Types.ObjectId,
+        required:true
+    },
     title:{
         type:String,
         required:[true,"enter the title of user"]

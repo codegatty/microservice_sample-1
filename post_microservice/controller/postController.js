@@ -3,7 +3,8 @@ const Post=require("../model/post");
 console.log("get all data");
 
 const getAllPosts=asyncHandler(async (req,res)=>{
-    const allposts=await Post.find();
+    
+    const allposts=await Post.find({userid:req.user.userid});
     res.status(200).json(allposts);
 })
 
@@ -20,7 +21,7 @@ const getOnePost=asyncHandler(async (req,res)=>{
 
 const createPost=asyncHandler(async (req,res)=>{
     console.log("createpost controller");
-
+    
     const {title,content}=req.body;
 
     if(!title || !content){
@@ -29,7 +30,8 @@ const createPost=asyncHandler(async (req,res)=>{
     }
     let post=await Post.create({
         title,
-        content
+        content,
+        userid:req.user.userid
     });
     if(post){
         res.status(201).json(post);

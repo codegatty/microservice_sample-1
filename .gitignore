@@ -1,4 +1,4 @@
-auth_microservice/node_module
-post_microservice/node_module
+auth_microservice/node_modules
+post_microservice/node_modules
 auth_microservice/.env
 post_microservice/.env

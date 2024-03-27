@@ -1,6 +1,8 @@
 const express=  require('express');
 const router=express.Router();
 
+
+const tokenValidator=require("../middleware/tokenValidator")
 const {
     getAllPosts,
     getOnePost,
@@ -8,6 +10,9 @@ const {
     deletePost,
     updatePost
 }=require("../controller/postController")
+
+router.use(tokenValidator);
+
 router.get("/",getAllPosts);
 
 router.get("/:id",getOnePost);

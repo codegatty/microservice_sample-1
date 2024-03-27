@@ -9,7 +9,6 @@ const connect=require('./config/dbConfig')
 app.use(express.json())
 app.use(express.urlencoded({ extended   : true }));
 
-
 connect();
 app.use('/api/users',require('./routes/userRoute'))
 

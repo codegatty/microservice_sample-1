@@ -1,6 +1,6 @@
 const mongoose= require('mongoose');
 
-const userSchema=mongoose.Schema({
+const postSchema=mongoose.Schema({
     title:{
         type:String,
         required:[true,"enter the title of user"]
@@ -10,4 +10,4 @@ const userSchema=mongoose.Schema({
         required:[true,"enter the content of user"]
     }
 },{timestamps:true});
-module.exports=mongoose.model("Post",userSchema);
+module.exports=mongoose.model("Post",postSchema);
